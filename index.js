@@ -80,38 +80,38 @@ app.use("/address-validate", async (req, res) => {
 });
 
 app.use("/rates", async (req, res) => {
-  let {  destinationCountryCode, destinationCityName, destinationPostalCode } = req.query;
+        let {  destinationCountryCode, destinationCityName, destinationPostalCode } = req.query;
   
-  try {
-        const response = await axios.get(`${dhl_url}/rates`, {
-                params: {
-                        accountNumber: account,
-                        originCountryCode: "NG",
-                        originPostalCode: "101233",
-                        originCityName: "Ikeja",
-                        destinationCountryCode,
-                        destinationPostalCode,
-                        destinationCityName,
-                        weight: 2,
-                        length: 25,
-                        width: 25,
-                        height: 15,
-                        plannedShippingDate: moment().add(48, 'hours').format('YYYY-MM-DD'), //YYYY-MM-DD
-                        isCustomsDeclarable: true, // true or false ---> true (dutiable) and false (non-dutiable)
-                        unitOfMeasurement: "metric",
-                },
-                headers: {
-                        Authorization: "Basic " + Buffer.from(`${user}:${password}`).toString("base64"),
-                },
-        });
+        try {
+                const response = await axios.get(`${dhl_url}/rates`, {
+                        params: {
+                                accountNumber: account,
+                                originCountryCode: "NG",
+                                originPostalCode: "101233",
+                                originCityName: "Ikeja",
+                                destinationCountryCode,
+                                destinationPostalCode,
+                                destinationCityName,
+                                weight: 2,
+                                length: 25,
+                                width: 25,
+                                height: 15,
+                                plannedShippingDate: moment().add(48, 'hours').format('YYYY-MM-DD'), //YYYY-MM-DD
+                                isCustomsDeclarable: true, // true or false ---> true (dutiable) and false (non-dutiable)
+                                unitOfMeasurement: "metric",
+                        },
+                        headers: {
+                                Authorization: "Basic " + Buffer.from(`${user}:${password}`).toString("base64"),
+                        },
+                });
 
-    res.status(200).send({
-      data: response.data,
-    });
-  } catch (e) {
-    console.log(e);
-    res.status(200).send(e);
-  }
+                res.status(200).send({
+                        data: response.data,
+                });
+        } catch (e) {
+                console.log(e);
+                res.status(200).send(e);
+        }
 });
 
 app.use("/create-shipment", async (req, res) => {
